@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
+
+</head>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Oswald', sans-serif;
+    user-select: none;
+
+}
+::-webkit-scrollbar
+{
+	width: 3px;
+   
+}	
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+    
+}
+::-webkit-scrollbar-thumb
+{
+	background-color: rgba(82, 45, 45, 0.63);
+	border-radius:12px;
+	width: 0px;
+   
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0); 
+ 
+}
+.Main
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+
+    opacity: 1;
+    
+}
+progress {
+  border: 0px solid rgba(0, 0, 0, 0.2);
+  width: 90%;
+  height: 1vw;
+  position: absolute;
+  bottom: 0%;
+  left: 0%;
+  background-color: rgba(255, 0, 0, 0.0);
+  box-shadow: 0px 0.5px 2px rgba(0, 0, 0, 0.5);
+}
+
+
+progress::-webkit-progress-bar
+{
+   
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.footstatus::-webkit-progress-value {
+    background:rgba(134, 142, 197,1);
+   
+}
+.vehstatus::-webkit-progress-value {
+    background:rgb(114, 216, 71);
+   
+}
+.Familyraidbar::-webkit-progress-value {
+    background:rgb(183, 0, 0);
+   
+}
+.fibraidbarfill
+{   
+    background: yellow;
+    box-shadow: 0px 0px 6px yellow;
+    animation: glow 0.5s infinite alternate;
+}
+@keyframes glow {
+    100%{
+        box-shadow: 0px 0px 3px yellow;
+    }
+}
+</style>
+<body>
+    <!-- <img src="./Annotation 2023-09-28 152545.png" style="position: absolute; width: 100%;" alt=""> -->
+    <div class="Main">
+        <div  style=" position: absolute; bottom: 20%; left: 1.5%; width: 15.7vw; height: auto;  background-color: none; ">
+            <div v-if="showfarm">
+                <div v-if="bartype == 0" style="position: relative; width: 100%; height: 3vw; margin-bottom: 1%;">
+                    <img src="./icons8-watering-can-48.png" style=" filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.3)); width: 2vw; position: absolute; top: -5%;" alt="">
+                    <p style="top: 20%; left: 15%; text-shadow: 0px 1px 2px black; position: absolute; color: rgba(134, 142, 197,1); text-transform: uppercase; font-size: 0.9vw; font-weight: 400; ">Water in a watering can</p>
+                    <progress  :max="max" :value="current"  style=" position: absolute; left: 0%;" class="footstatus"></progress>
+    
+                </div>
+                <div v-if="bartype == 1"style="position: relative; width: 100%; height: 3vw; margin-bottom: 1%;">
+                    <img src="./tractor.png" style=" filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.3)); width: 2vw; position: absolute; top: -5%;" alt="">
+                    <p style="top: 20%; left: 15%; text-shadow: 0px 1px 2px black; position: absolute; color: rgb(114, 216, 71); text-transform: uppercase; font-size: 0.9vw; font-weight: 400; ">Health of the Tractor</p>
+                    <progress v-if="bartype == 1"  :max="max" :value="current"  style=" position: absolute; left: 0%;" class="vehstatus"></progress>
+    
+                </div>
+            </div>
+           
+            <div v-if="familyraidstart"style="position: relative; width: 100%; height: 3vw; margin-bottom: 1%;">
+                <img src="./houseraid.png" style=" filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.3)); width: 2vw; position: absolute; top: -5%;" alt="">
+                <p style="top: 20%; left: 15%; text-shadow: 0px 1px 2px black; position: absolute; color: rgb(255, 255, 255); text-transform: uppercase; font-size: 0.9vw; font-weight: 400; ">Family Raid House #{{houseid}}</p>
+                <progress  :max="raidtimemax" :value="raidtimecurrent"  style=" position: absolute; left: 0%;" class="Familyraidbar"></progress>
+
+            </div>
+            
+        </div>
+        
+        <div  v-if="isFamilyHouse">
+            <p  style="text-shadow: 0px 1px 3px black; position: absolute; transform: translate(-50%, -50%);  color: white; top: 50%; left: 50%; font-size: 1vw;">Press <span style="font-size: 1.5vw; color: orange;"> [ R ]</span> to start raid</p>
+        </div>
+       <div v-if="ShowAtmRob" style="position: absolute; width: 30%; height: 5vw; bottom: 5%; left: 35%; ">
+            <p style="width: 100%; letter-spacing: 1px; text-transform: uppercase; text-align: center; font-size: 1.2vw; font-weight: bold; color: white; text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);">{{RobHead}}</p>
+            <progress  :max="RobMax" :value="Robtime"  style=" position: absolute; width: 70%; box-shadow: 0px 0px 2px black;  top: 40%; left: 15%;" class="vehstatus"></progress>
+       </div>
+
+       <div v-if="ShowRaidBar" style="position: absolute;  top: 1%; width: 25vw; left: 50%;">
+            <p style="text-align: center; text-transform: uppercase; font-weight: 600;  position: relative; width: 100%; font-size: 1.2vw; color: rgba(255, 255, 0, 0.859); text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);">{{RaidID > 18?RaidOn + " Raid" : 'Raid'}}</p>
+            <p v-if="RaidID <= 18" style="text-align: center; text-transform: uppercase; position: relative; width: 100%; font-size: 1.2vw; color: white; text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);">FIB({{orgcount}}) <span style=" color: rgb(255, 123, 123);">VS</span> {{RaidOn}}({{onraidcount}})</p>
+
+            <p v-if="RaidID > 18" style="text-align: center; text-transform: uppercase; position: relative; width: 100%; font-size: 1.2vw; color: white; text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.4);">Legal Orgs ({{orgcount}}) <span style=" color: rgb(255, 123, 123);">VS</span> Gangs ({{onraidcount}})</p>
+
+            <div style=" display: flex; justify-content: center; position: relative; margin-top:1%; border-radius: 50px; width: 100%; height: 0.5vw; border: 0px solid rgba(0, 0, 0, 0.638); background:rgba(0, 0, 0, 0.1);">
+                <div class="fibraidbarfill" :style=`width:${raidbarwidths}%` style=" position: absolute; display: flex; flex-wrap: wrap; justify-content: center;  height: 100%;border-radius: 50px; "></div>
+            </div>
+            <div style="position: relative;  display: flex; flex-wrap: wrap; justify-content: center; width: 100%; ">
+                <p style="position: relative; width: auto; border-radius: 3px;letter-spacing: 1px; margin: 0.5%; padding: 1%; text-align: center; color: rgb(234, 234, 234); font-size: 0.6vw; height:1.5vw;  background: rgba(162, 162, 162, 0.505);"  v-for="(item, index) in Players" v-if="item.count > 0">{{item.fractionname}} {{item.count}}</p>
+            </div>
+       </div>
+    </div>
+   
+    
+</body>
+
+<script src="package://vue.min.js"></script> 
+    <script src="./FarmerStatus.js"></script>
+</html>
+<!-- <script src="package://vue.min.js"></script> -->

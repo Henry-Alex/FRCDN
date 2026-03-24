@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
+</head>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Oswald', sans-serif;
+    user-select: none;
+
+}
+::-webkit-scrollbar
+{
+	width: 3px;
+   
+}	
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+    
+}
+::-webkit-scrollbar-thumb
+{
+	background-color: rgba(255, 255, 255, 0.63);
+	border-radius:12px;
+	width: 0px;
+   
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0); 
+ 
+}
+
+input
+{
+    outline: none;
+    border: none;
+}
+input::placeholder
+{
+    color: rgba(0, 0, 0, 0.7);font-size: 0.8vw;
+}
+.Main
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    background: radial-gradient(0% 60.89% at 50% 0%, rgba(38, 36, 56, 0) 0%, rgba(41, 40, 58, 0.5) 100%);
+	background-color: rgba(182, 198, 160, 0.0);
+
+}
+.maintab
+{
+    border-radius: 3px;
+    margin: 2%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: 0.3s;
+}
+.maintab:hover
+{
+    background: rgba(169, 255, 132, 0.8);
+    box-shadow: 0px 1px 6px rgba(255, 255, 255, 0.5);
+}
+.sellbtn
+{
+    margin-top: 13%;
+    outline: none;
+    border: 1px solid rgba(255, 255, 255, 0);
+    background: rgba(255, 255, 255, 0.4);
+    font-size: 0.7vw;
+    color: rgba(0, 0, 0, 0.7);
+    border-radius: 3px;
+    width: 4vw;
+    height: 2vw;
+    position: relative;
+    left: 8%;
+    transition: 0.3s;
+}
+.sellbtn:hover
+{
+    background: black;
+    color: white;
+}
+</style>
+<body>
+    <!-- <img src="./day.png" style="position: absolute; width: 100%;" alt=""> -->
+    <div class="Main">
+      <div style="position: absolute; width: 26%; height: 50%; left: 34%; top: 25%; background-color: rgba(255, 0, 0, 0.0);">
+        <div style="position: relative; width: 100%; height: 3vw; display: flex;">
+            <p style="position: relative; width: 80%; height: 100%; font-size: 1.5vw; color: white; padding: 2%;">Sell Your Farm Items</p>
+            <p @click="Closemenu" style="position: relative; width: 20%; height: 100%; font-size: 1vw; color: white; padding: 5%;">CLOSE</p>
+
+        </div>
+        <div style="position: relative; width: 100%; height: 88%; background-color: none; overflow: hidden; overflow-y: auto;">
+            <div v-if="item.amount != 0" class="maintab" style=" position: relative; width: 96%; height: auto; display: flex;  " v-for="(item, index) in FarmItems" >
+                <div style="position: relative; width: 30%; height: 5.5vw; margin: 1%; margin-left: 2%;">
+                    <img :src=`${cloud}${item.id}.png` style="filter: drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.6)); position: relative; width: 2.5vw; margin-left: 20%;" alt="">
+                    <p style="position: relative; width: 70%; font-size: 0.9vw; color: white; text-align: center;">{{item.name}}</p>
+                    <p style="position: relative; width: 70%; font-size: 0.8vw; text-align: center; color: white;">x{{item.amount}}</p>
+                </div>
+                
+                <input style="background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 3px; margin: 8%; text-align: center; width: 3vw; height: 2vw; color: rgb(10, 10, 10); font-size: 0.8vw; margin-left: 15%; "  placeholder="amount to sell" type="number" v-model="item.sellingamount"  v-bind="item.sellingamount ==0||item.sellingamount > item.amount? item.sellingamount = 1: item.sellingamount = item.sellingamount" onkeydown="return event.keyCode !== 69">
+                <div style="position: relative; width: 20%; height: 4vw; margin-left: 10%; margin-top: 3%; background-color: none;">
+                    <p  style="position: relative; width: 100%; text-align: center; padding: 2%; font-size: 1vw; color: white;">${{item.totalsellingcost = item.sellingamount * item.cost}}</p>
+                    <button @click="SellItem(index)" class="sellbtn">SELL</button>
+                </div>
+                
+
+            </div>
+        </div>
+        
+      </div>
+
+    </div>
+    
+</body>
+
+<script src="package://vue.min.js"></script> 
+    <script src="./FarmerBuyer.js"></script>
+</html>
+<!-- <script src="package://vue.min.js"></script> -->

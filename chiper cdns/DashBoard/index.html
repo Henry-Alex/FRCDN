@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>M Menü | EXO DESIGN | MR.EXO</title>
+    <script src="./vue.min.js"></script>
+    <script src="./progressbar.js"></script>
+  </head>
+  <body>
+    <div class="DashMain">
+      <div class="mainup">
+        <div @click="OpenType(2)" class="inventory">
+          <img src="./assets/case.svg" alt="" />
+          <h1>Inventar</h1>
+        </div>
+        <div class="inventory">
+          <img src="./assets/chart.svg" alt="" />
+          <h1>Statistiken</h1>
+        </div>
+        <div @click="OpenType(0)" class="inventory">
+          <img src="./assets/shop.svg" alt="" />
+          <h1>Laden</h1>
+        </div>
+        <div class="inventory">
+          <img src="./assets/gear.svg" alt="" />
+          <h1>Einstellungen</h1>
+        </div>
+        <div @click="OpenType(3)" class="inventory">
+          <img src="./assets/family.svg" alt="" />
+          <h1>Familie</h1>
+        </div>
+        <!--organization-->
+        <div class="inventory">
+          <img src="./assets/organization.svg" alt="" />
+          <h1>Organisation</h1>
+        </div>
+        <div @click="OpenType(1)" class="inventory">
+          <img src="./assets/job.svg" alt="" />
+          <h1>Mein Job</h1>
+        </div>
+        <div class="inventory">
+          <img src="./assets/estate.svg" alt="" />
+          <h1>Immobilien</h1>
+        </div>
+      </div>
+      <div class="maindown">
+        <div class="event">Tägliche<br />Aufgabe</div>
+        <div class="event">Neuer Battlepass</div>
+        <div class="event">Neues Event</div>
+        <div class="event">Meine Haustiere</div>
+        <div class="event">Aufgabe</div>
+        <div class="event">Interessengruppe</div>
+        <div class="event">Errungenschaft</div>
+        <div @click="OpenType(6)" class="event">Bericht</div>
+        <div class="event">Empfehlungssystem</div>
+      </div>
+    </div>
+    <script src="./listener.js"></script>
+  </body>
+</html>

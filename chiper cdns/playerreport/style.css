@@ -1,0 +1,346 @@
+@import url("https://fonts.cdnfonts.com/css/akrobat");
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Akrobat", sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
+
+body {
+  background-color: #131313;
+}
+
+.main {
+  width: 100vw;
+  height: 100vh;
+  background-image: url(./assets/bg.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  gap: 1vw;
+}
+
+.left {
+  height: 100%;
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 5vw;
+}
+
+.backbtn {
+  width: 100%;
+  height: 15%;
+  /* background-color: rgba(255, 0, 0, 0.267); */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 2vw;
+  gap: 1vw;
+}
+
+.backbtn > img {
+  width: 18%;
+}
+.backbtn > h1 {
+  color: #666769;
+  font-size: 1.5vw;
+  text-transform: uppercase;
+}
+.backbtn > h1 > span {
+  color: #c6c7c9;
+}
+
+.paneloptions {
+  width: 100%;
+  height: 40%;
+  /* background-color: rgba(255, 0, 0, 0.267); */
+  display: flex;
+  flex-direction: column;
+  padding: 1.5vw;
+  justify-content: space-around;
+}
+
+.div1,
+.div2,
+.div3 {
+  background: linear-gradient(
+    -90deg,
+    rgba(255, 255, 255, 0) 20%,
+    rgba(255, 255, 255, 1) 600%
+  );
+  width: 100%;
+  height: 32%;
+  border-radius: 0.3vw;
+  display: flex;
+  align-items: center;
+  gap: 1vw;
+  justify-content: flex-start;
+  padding-left: 1vw;
+}
+
+.div1 > img {
+  width: 8.5%;
+}
+
+.div1 > h1 {
+  color: white;
+  text-transform: uppercase;
+  font-size: 1.3vw;
+}
+
+.div2 > img {
+  width: 8.5%;
+}
+
+.div2 > h1 {
+  color: white;
+  text-transform: uppercase;
+  font-size: 1.3vw;
+}
+
+.div3 > img {
+  width: 8.5%;
+}
+
+.div3 > h1 {
+  color: white;
+  text-transform: uppercase;
+  font-size: 1.3vw;
+}
+
+.div1:hover,
+.div2:hover,
+.div3:hover {
+  background: linear-gradient(
+    -90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 350%
+  );
+  width: 100%;
+  height: 32%;
+  border-radius: 0.3vw;
+}
+
+.calladmin {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  padding-left: 5%;
+}
+
+.callbox {
+  /* background-color: rgba(255, 0, 0, 0.267); */
+  aspect-ratio: 1 / 1;
+  width: 40%;
+  border: 0.1vw solid rgba(255, 255, 255, 0.185);
+  border-radius: 0.5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1vw;
+  cursor: pointer;
+}
+
+.callbox > img {
+  width: 30%;
+}
+.callbox > h1 {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 1.5vw;
+  color: white;
+  /* width: 30%; */
+}
+
+.right {
+  width: 40%;
+  /* background-color: rgba(255, 0, 0, 0.267); */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inputarea {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5vw;
+}
+
+.inputarea > h6 {
+  color: #666769;
+  text-transform: uppercase;
+  font-size: 1.1vw;
+}
+.inputarea > h6 > span {
+  color: #e6e6e6;
+  text-transform: uppercase;
+  font-size: 1.1vw;
+}
+
+.inputfield {
+  width: 100%;
+  height: 40%;
+  /* background-color: red; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.inputfield > img {
+  position: absolute;
+  width: 7%;
+  right: 2%;
+  opacity: 0.5;
+}
+
+.inputfield > input {
+  width: 100%;
+  height: 100%;
+  border-radius: 0 0 0 1.5vw;
+  outline: none;
+  border: none;
+  padding: 0 16px;
+  font-size: 1.3vw;
+  font-family: "Akrobat Bold", sans-serif;
+  letter-spacing: 1.5px;
+}
+.textarea {
+  width: 100%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  padding: 1vw 0vw;
+  gap: 1vw;
+  overflow-y: scroll;
+  /* background-color: red; */
+}
+
+.admin {
+  width: 60%;
+  height: 15%;
+  background-color: #202022;
+  border-radius: 1vw 0 1vw 0;
+  display: flex;
+}
+
+.admin-left {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1vw;
+  justify-content: center;
+  gap: 0.3vw;
+}
+
+.admin-left > h1 {
+  font-size: 1vw;
+  color: #ffc219;
+  text-transform: uppercase;
+  font-family: "Akrobat Black", sans-serif;
+  letter-spacing: 1px;
+}
+
+.admin-left > h1 > span {
+  font-size: 1vw;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: "Akrobat Black", sans-serif;
+}
+
+.admin-left > p {
+  color: #666769;
+  font-size: 1vw;
+}
+
+.admin-right {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  color: red;
+}
+
+.admin-right > h6 {
+  color: #666769;
+  font-size: 0.8vw;
+  letter-spacing: 1px;
+  padding-top: 1vw;
+}
+
+.player {
+  width: 60%;
+  height: 15%;
+  background-color: #202022;
+  border-radius: 1vw 0 1vw 0;
+  align-self: flex-end;
+  display: flex;
+}
+
+.player-left {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1vw;
+  justify-content: center;
+  gap: 0.3vw;
+}
+
+.player-left > h1 {
+  font-size: 1vw;
+  color: #ffc219;
+  text-transform: uppercase;
+  font-family: "Akrobat Black", sans-serif;
+  letter-spacing: 1px;
+}
+
+.player-left > h1 > span {
+  font-size: 1vw;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-family: "Akrobat Black", sans-serif;
+}
+
+.player-left > p {
+  color: #666769;
+  font-size: 1vw;
+}
+
+.player-right {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  color: red;
+}
+
+.player-right > h6 {
+  color: #666769;
+  font-size: 0.8vw;
+  letter-spacing: 1px;
+  padding-top: 1vw;
+}
+
+::-webkit-scrollbar {
+  width: 6px; /* Thin scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #fec219; /* Thumb color */
+  border-radius: 3px; /* Optional for rounded corners */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #131313; /* Tracker color */
+}

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
+</head>
+<style>
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Oswald', sans-serif;
+    user-select: none;
+
+}
+::-webkit-scrollbar
+{
+	width: 3px;
+   
+}	
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+    
+}
+::-webkit-scrollbar-thumb
+{
+	background-color: rgba(82, 45, 45, 0.63);
+	border-radius:12px;
+	width: 0px;
+   
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0); 
+ 
+}
+.Main
+{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+    background: radial-gradient(0% 60.89% at 50% 0%, rgba(38, 36, 56, 0) 0%, rgba(41, 40, 58, 0.75) 100%);
+	background-color: rgba(182, 198, 160, 0);
+    perspective: 2000px;
+    opacity: 0;
+    animation: appear 1s forwards;
+}
+@keyframes appear {
+	50% {
+		
+		opacity: 0;
+	}
+	100% {
+		
+		opacity: 1;
+	}
+	
+	
+}
+.box1
+{
+    transform: rotateY(20deg);
+}
+.box2
+{
+    transform: rotateY(-20deg);
+}
+.getjobbtn
+{
+    font-size: 1.1vw;
+    margin: 4%;
+    margin-top: 2%;
+    border-radius: 5px;
+    color: white;
+    background: rgba(0, 0, 0, 0.8);
+    border: none;
+    outline: none;
+    transition: 0.3s;
+}
+.getjobbtn:hover
+{
+    background: rgb(57, 67, 63);
+}
+</style>
+<body>
+    <!-- <img src="./day.png" style="position: absolute; width: 100%;" alt=""> -->
+    <div class="Main">
+        <div class="box1" v-if="menu == 0" style="position: absolute; width: 38%; height: 55%; top: 25%; left: 41%; overflow: hidden; background-image: linear-gradient( to bottom, #85e56a 10%, #28b700 100%);">
+            <img src="./pngegg-min.png" style="position: absolute; bottom: -10%; right: 0%; width: 50%;" alt="">
+            <img src="./E0dIiq4_result.jpg" style="position: absolute; width: 100%; height: 100%; opacity: 0.3; top: 0%; left: 0%;" alt="">
+        </div>
+
+        <div v-if="menu == 0" style="position: absolute; width: 38%; height: 55%; top: 25%; left: 41%; overflow: hidden; ">
+            
+            
+            
+            <p style="position: relative; color: rgba(0, 0, 0, 0.8); font-size: 1.2vw; font-size: 400; width: 100%; text-align: left; margin-top: 4%; padding-left: 4%; text-transform: uppercase;">Information and requirements</p>
+            <div style="position: relative; width: 100%; height: 5vw; display: flex;">
+                <p style=" margin:4%; position: relative; border-radius: 3px; color: white; width: 12vw; padding: 2%; font-size: 1.1vw; text-align: center; font-weight: 300; height: max-content; background: linear-gradient( to bottom, rgb(52, 46, 37) 10%, rgb(37, 31, 22) 100%);">Part-Time Job</p>
+
+                
+
+                <p style=" margin:4%;margin-top: 4%; position: relative; border-radius: 3px; color: white; width: 10vw; text-align: center; padding: 2%; font-size: 1vw; font-weight: 300; height: max-content; background: linear-gradient( to bottom, rgb(52, 46, 37) 10%, rgb(37, 31, 22) 100%);">Salary In Cash</p>
+            </div>
+            <p style="position: relative; color: rgba(0, 0, 0, 0.8); font-size: 1.0vw; font-size: 400; width: 100%; text-align: left; margin-top: 6%; padding-left: 4%; text-transform: uppercase;">Job description</p>
+            <div style="position: relative; margin-left: 3%; width: 60%; height: 42%; background: rgba(255, 0, 0, 0); overflow: hidden; overflow-y: auto;">
+                <p style="position: relative; color: rgba(6, 6, 6, 0.8); font-size: 0.9vw; font-weight: 400; width: 96%; padding: 2%;">Level 1 Welcome to Farming Job,wear your uniform fill your watering pot with water and go to fields to water the plants.<br><br>
+                    Level 2 So you are now somewhat experienced farmer. Let's go with the cultivating of plants. Rent a Cultivator, with time your cultivator will deteriorate and repair it at the repair station and you can go with cultvation again.<br><br>
+                    Level 3 You are now an experienced farmer. You know how a farmer do it's job. Goodluck you can do either water the seeds or cultivate the plants with a cultivator</p>
+            </div>
+            <div v-if="!leave" style="position: relative; width: 96%; height: 5vw; display: flex;">
+             
+
+                <button @click="StartFarmerJob(1)" v-if="skill == 1 || skill >= 3" class="getjobbtn" style="position: relative; width: 10vw; height: 4vw; ">Get Employed<br><span style="color: orange; font-size: 0.9vw;">level - 1</span></button>  
+                <button @click="StartFarmerJob(2)" v-if="skill == 2 || skill >= 3" class="getjobbtn" style="position: relative; width: 10vw; height: 4vw; ">Get Employed<br><span style="color: orange; font-size: 0.9vw;">level - 2</span></button>   
+            </div>
+            <div v-if="leave" style="position: relative; width: 96%; height: 5vw; display: flex;">
+             
+
+                <button @click="LeaveFarmerJob()" class="getjobbtn" style="position: relative; width: 10vw; height: 4vw; ">Leave<br><span style="color: orange; font-size: 0.9vw;">The Job</span></button>  
+                  
+            </div>
+               
+        </div>
+        <div class="box2" v-if="menu == 0" style="position: absolute; width: 18%; height: 55%; top: 25%; left: 24%; overflow: hidden; background-image: linear-gradient( to bottom, #212f59 10%, #211639 100%);;">
+            <img src="./E0dIiq4_result.jpg" style="position: absolute; width: 100%; height: 100%; opacity: 0.2; top: 0%; left: 0%;" alt="">
+
+        </div>
+        <div v-if="menu == 0"  style="position: absolute; width: 18%; height: 55%; top: 27%; left: 24%; ">
+            <p style="position: relative; width: 80%; left: 10%; margin-top: 8%; color: white; font-size: 1.5vw; text-align: center; text-transform: uppercase;">Work Of The Farmer (#{{farmid}})</p>
+
+            <p style="position: relative; width: 50%; left: 25%; margin-top: 15%; color: rgba(255, 255, 255, 0.6); font-size: 0.9vw; text-align: center; text-transform: uppercase;">Price Per Bush <br><span style="color: white; font-size: 1.2vw;">${{vehmoney}}</span></p>
+
+            <p style="position: relative; width: 50%; left: 25%; margin-top: 15%; color: rgba(255, 255, 255, 0.6); font-size: 0.9vw; text-align: center; text-transform: uppercase;">The Price for digging the field <br><span style="color: white; font-size: 1.2vw;">${{footmoney}}</span></p>
+
+            <p style="position: relative; width: 50%; left: 25%; margin-top: 15%; color: orange; font-size: 0.9vw; text-align: center; text-transform: uppercase;">Your level of skill <br><span style="color: white; font-size: 1.2vw;">{{skill}}</span></p>
+        </div>
+
+        <div v-if="menu == 1"  style="position: absolute; width: 55%; height: 50%; left: 20%; top: 25%; background-color: rgba(255, 0, 0, 0.0);">
+            <img src="./tractor.png" style=" width: 50vw; height: 40vw; filter: drop-shadow(0px 1px 3px #171616); position: absolute; top: -40%; left: 6%;" alt="">
+            <p style="position: absolute; bottom: 0%; font-weight: 400; width: 100%; text-align: center; color: white; font-size: 1.3vw;" >Click & Hold On Parts To Repair</p>
+
+            <div v-if="TotalPartsRepair[0] == 0" :style="[repairProgress == 0?{'transform':'rotateZ(10000deg)'}: {'transform':'rotateZ(0deg)'}]" v-on:mouseup="CancleVehiclerepair" v-on:mousedown="Vehiclerepair(0)" style="transition: 10s; position: absolute; border-radius: 100px; border: 0px solid white; width: 10vw; height: 10vw; background-color: rgba(21, 20, 20, 0.0); bottom: 27%; left: 21%;">
+                <img src="./repair.png" style="position: absolute; width: 3vw;  top: 50%; left: 50%; transform: translate(-50%, -50%);  filter: invert(0);" alt="">
+            </div>
+
+            <div v-if="TotalPartsRepair[1] == 0" :style="[repairProgress == 1?{'transform':'rotateZ(10000deg)'}: {'transform':'rotateZ(0deg)'}]" v-on:mouseup="CancleVehiclerepair" v-on:mousedown="Vehiclerepair(1)" style="transition: 10s;position: absolute; border-radius: 100px; width: 12vw; height: 12vw; background-color: rgba(21, 20, 20, 0.0); bottom: 17%; right: 16%;">
+            <img src="./repair.png" style="position: absolute; width: 3vw; top: 50%; left: 50%; transform: translate(-50%, -50%);  filter: invert(0);" alt="">
+            </div>
+
+            <div v-if="TotalPartsRepair[2] == 0" :style="[repairProgress == 2?{'transform':'rotateZ(10000deg)'}: {'transform':'rotateZ(0deg)'}]" v-on:mouseup="CancleVehiclerepair" v-on:mousedown="Vehiclerepair(2)" style="transition: 10s;position: absolute; width: 11vw; border-radius: 100px; height: 11vw; background-color: rgba(21, 20, 20, 0.0); top: -20%; left: 33%;">
+                <img src="./repair.png" style="position: absolute; width: 3vw; top: 50%; left: 50%; transform: translate(-50%, -50%);  filter: invert(0);" alt="">
+            </div>
+        </div>
+    </div>
+    
+</body>
+
+<script src="package://vue.min.js"></script> 
+    <script src="./FarmerJob.js"></script>
+</html>
+<!-- <script src="package://vue.min.js"></script> -->

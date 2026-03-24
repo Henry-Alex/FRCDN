@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="package://vue.min.js"></script>
+  </head>
+  <body>
+    <div class="main" id="app">
+      <div class="listarea">
+        <div class="report" v-for="r in reports" :key="r.id">
+          <h4>{{ r.text }}</h4>
+          <h6>{{ r.author }} : {{ r.uuid }}</h6>
+          <button class="openbtn" @click="open(r.id)">Open</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const ReportOverlay = new Vue({
+        el: "#app",
+        data: {
+          reports: [],
+        },
+        methods: {
+          addReport(id, author, text, uuid) {
+            const numId = parseInt(id);
+            if (this.reports.find((r) => r.id === numId)) return;
+            this.reports.unshift({
+              id: numId,
+              author: String(author || "Unknown"),
+              text: String(text || ""),
+              uuid: uuid || "",
+            });
+          },
+          removeReport(id) {
+            const numId = parseInt(id);
+            const idx = this.reports.findIndex((r) => r.id === numId);
+            if (idx !== -1) this.reports.splice(idx, 1);
+          },
+          open(id) {
+            mp.trigger("reportoverlay:open", id);
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
