@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Reports</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="package://vue.min.js"></script>
+  </head>
+  <body>
+    <div class="admin-app main-bg">
+      <button class="panel-close" @click="closePanel">Close</button>
+      <aside class="admin-sidebar">
+        <h1>Admin Reports</h1>
+        <div class="side-group">
+          <div class="group-title">Open / In Questions</div>
+          <button
+            v-for="report in activeReports"
+            :key="report[0]"
+            class="report-item"
+            :class="{ selected: report[0] === selectedTicketId }"
+            @click="selectReport(report)"
+          >
+            <div class="report-head">
+              <span>#{{ report[0] }}</span>
+              <span class="badge" :class="statusClass(report[8])"
+                >{{ statusText(report[8]) }}</span
+              >
+            </div>
+            <div class="player">{{ report[1] || 'Unknown' }}</div>
+            <div class="reason">{{ report[2] || 'No reason text' }}</div>
+          </button>
+          <div v-if="activeReports.length === 0" class="empty">
+            No open tickets.
+          </div>
+        </div>
+
+        <div class="side-group">
+          <div class="group-title">Closed</div>
+          <div
+            class="closed-line"
+            v-for="report in closedReports"
+            :key="report[0]"
+          >
+            #{{ report[0] }} - {{ report[1] || 'Unknown' }}
+          </div>
+          <div v-if="closedReports.length === 0" class="empty">
+            No closed tickets.
+          </div>
+        </div>
+      </aside>
+
+      <section class="admin-chat">
+        <div class="chat-top">
+          <div>
+            <div class="ticket-title">
+              {{ selectedTicketId > 0 ? ('Ticket #' + selectedTicketId) :
+              'Select Ticket' }}
+            </div>
+            <div class="ticket-sub">{{ currentPlayerName || '-' }}</div>
+          </div>
+          <div class="actions" v-if="selectedTicketId > 0">
+            <button class="question" @click="setTicketStatus(1)">
+              In Questions
+            </button>
+            <button class="open" @click="setTicketStatus(0)">Open</button>
+            <button class="close" @click="setTicketStatus(2)">Close</button>
+          </div>
+        </div>
+
+        <div class="messages">
+          <div
+            v-for="message in chatMessages"
+            :key="message[0]"
+            class="msg"
+            :class="{ admin: isAdminMessage(message) }"
+          >
+            <div class="name">{{ message[2] }}</div>
+            <div class="text">{{ message[3] }}</div>
+            <div class="time">{{ message[4] }}</div>
+          </div>
+          <div v-if="chatMessages.length === 0" class="empty">
+            No messages loaded.
+          </div>
+        </div>
+
+        <div class="send-box" v-if="selectedTicketId > 0">
+          <input
+            type="text"
+            v-model="chatInput"
+            placeholder="Write reply"
+            maxlength="300"
+            @keyup.enter="sendChatMessage"
+          />
+          <button @click="sendChatMessage">Send</button>
+        </div>
+      </section>
+    </div>
+
+    <script src="./index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="pda.css" />
+    <title>PDA</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  </head>
+  <body>
+    <div class="pda-body">
+      <div class="container" id="pda-app">
+        <img src="./assets/image.png" draggable="false" alt="" />
+
+        <div class="left-menu">
+          <div class="logoname">
+            <img src="./assets/CIPHER.png" draggable="false" alt="" />
+            <h6>x</h6>
+            <h3>PDA</h3>
+          </div>
+
+          <div
+            class="menubtn"
+            @click="switchToSearch"
+            :style="activeTab === 'search' ? 'opacity:100%' : ''"
+          >
+            <div class="mleft">search for a citizen or a car</div>
+            <div class="mright">
+              <img src="./assets/search.svg" draggable="false" alt="" />
+            </div>
+          </div>
+
+          <div
+            class="menubtn"
+            @click="switchToIssue"
+            :style="activeTab === 'issue' ? 'opacity:100%' : ''"
+          >
+            <div class="mleft">issue a citation or a wanted notice</div>
+            <div class="mright">
+              <img src="./assets/note.svg" draggable="false" alt="" />
+            </div>
+          </div>
+
+          <div class="menubtn">
+            <div class="mleft">calls</div>
+            <div class="mright">
+              <img src="./assets/phone.svg" draggable="false" alt="" />
+            </div>
+          </div>
+
+          <div
+            class="menubtn"
+            @click="switchToWantedBase"
+            :style="activeTab === 'wantedBase' ? 'opacity:100%' : ''"
+          >
+            <div class="mleft">general search base</div>
+            <div class="mright">
+              <img src="./assets/usersearch.svg" draggable="false" alt="" />
+            </div>
+          </div>
+
+          <div
+            class="menubtn"
+            @click="switchToBlacklist"
+            :style="activeTab === 'blacklist' ? 'opacity:100%' : ''"
+          >
+            <div class="mleft">blacklist</div>
+            <div class="mright">
+              <img src="./assets/blacklist.svg" draggable="false" alt="" />
+            </div>
+          </div>
+
+          <div class="glcall">
+            <div class="global-call" @click="sendGlobalCall"></div>
+            <div class="local-call" @click="sendLocalCall"></div>
+          </div>
+        </div>
+
+        <div class="right-content">
+          <div
+            class="main-search"
+            v-show="(activeTab === 'search' || activeTab === 'issue') && !result"
+          >
+            <h1>
+              <span>{{ activeTab === 'issue' ? 'issue-' : 'entry-' }}</span>
+              {{
+                activeTab === 'issue'
+                  ? 'Enter citizen name, UUID, phone number or vehicle number'
+                  : 'Enter the car number, citizen name or phone number'
+              }}
+            </h1>
+
+            <input
+              type="text"
+              v-model="query"
+              @keyup.enter="doSearch"
+              @focus="onInputFocus(true)"
+              @blur="onInputFocus(false)"
+              :placeholder="
+                activeTab === 'issue'
+                  ? 'Citizen name, UUID, phone number or vehicle number'
+                  : 'Citizen name, vehicle number or phone number'
+              "
+            />
+
+            <div
+              v-if="searching"
+              style="
+                color: #01c0cd;
+                font-size: 0.9vw;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+              "
+            >
+              Searching...
+            </div>
+
+            <div
+              v-if="notFound"
+              style="
+                color: #ff4444;
+                font-size: 0.9vw;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+              "
+            >
+              No record found for "{{ lastQuery }}"
+            </div>
+          </div>
+
+          <div
+            class="search-result"
+            v-show="(activeTab === 'search' || activeTab === 'issue') && result"
+          >
+            <div class="sr-top">
+              <h1>
+                <span>{{ activeTab === 'issue' ? 'issue //' : 'search //' }}</span>
+                {{ result && result.name }}
+              </h1>
+            </div>
+
+            <div class="sr-name-btns">
+              <div class="sr-name-left">
+                <h1>{{ result && result.name }}</h1>
+                <h4>
+                  {{ result && result.wantedLevel }} <span>wanted level</span>
+                </h4>
+              </div>
+
+              <div class="sr-btn-right">
+                <div class="sr-btn" @click="backToSearch">back to search</div>
+                <div class="sr-btn2" @click="openIssueWarrant">
+                  issue warrant
+                </div>
+                <div class="sr-btn3">issue fine</div>
+                <div
+                  class="sr-btn4"
+                  v-if="activeTab === 'issue'"
+                  @click="openVehicleWarrant"
+                >
+                  issue wanted on car
+                </div>
+                <div
+                  class="sr-btn5"
+                  v-if="activeTab === 'issue'"
+                  @click="openCitizenBlacklist"
+                >
+                  blacklist citizen
+                </div>
+              </div>
+            </div>
+
+            <div class="warrant-form" v-if="issueWarrantOpen">
+              <div class="form-row">
+                <label>Target UUID</label>
+                <input type="text" disabled :value="result.uuid" />
+              </div>
+
+              <div class="form-row">
+                <label>Stars (1-6)</label>
+                <input
+                  type="number"
+                  v-model.number="warrantStars"
+                  min="1"
+                  max="6"
+                />
+              </div>
+
+              <div class="form-row">
+                <label>Reason</label>
+                <textarea
+                  v-model="warrantReason"
+                  placeholder="Enter warrant reason"
+                ></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button @click="submitWarrant">Submit</button>
+                <button @click="cancelWarrant">Cancel</button>
+              </div>
+            </div>
+
+            <div class="warrant-form" v-if="vehicleWarrantOpen">
+              <div class="form-row">
+                <label>Vehicle Plate</label>
+                <input type="text" v-model="vehiclePlate" placeholder="Enter plate number" />
+              </div>
+
+              <div class="form-row">
+                <label>Reason</label>
+                <textarea
+                  v-model="vehicleWarrantReason"
+                  placeholder="Enter vehicle wanted reason"
+                ></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button @click="submitVehicleWarrant">Submit</button>
+                <button @click="cancelWarrant">Cancel</button>
+              </div>
+            </div>
+
+            <div class="warrant-form" v-if="citizenBlacklistOpen">
+              <div class="form-row">
+                <label>Citizen</label>
+                <input type="text" disabled :value="result && result.name" />
+              </div>
+
+              <div class="form-row">
+                <label>Reason</label>
+                <textarea
+                  v-model="citizenBlacklistReason"
+                  placeholder="Enter blacklist reason"
+                ></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button @click="submitCitizenBlacklist">Submit</button>
+                <button @click="cancelWarrant">Cancel</button>
+              </div>
+            </div>
+
+            <div class="sr-nav-sec">
+              <div
+                class="sr-nav"
+                v-for="(tab, i) in tabs"
+                :key="i"
+                :style="activeNav === i ? 'color:white; border-bottom: white solid 0.1vw; cursor:pointer;' : 'cursor:pointer;'"
+                @click="activeNav = i"
+              >
+                {{ tab }}
+              </div>
+            </div>
+
+            <div class="sr-pages" v-if="result">
+              <div class="sr-information-page" v-show="activeNav === 0">
+                <div class="sr-info-box">
+                  <h6>Gender</h6>
+                  <h1>{{ result.gender }}</h1>
+                </div>
+                <div class="sr-info-box">
+                  <h6>Phone</h6>
+                  <h1>{{ result.phone }}</h1>
+                </div>
+                <div class="sr-info-box">
+                  <h6>Structure</h6>
+                  <h1>{{ result.structure }}</h1>
+                </div>
+                <div class="sr-info-box">
+                  <h6>Prison Term</h6>
+                  <h1>{{ result.prisonTerm }}</h1>
+                </div>
+                <div class="sr-info-box">
+                  <h6>House Number</h6>
+                  <h1>{{ result.houseNumber }}</h1>
+                </div>
+                <div class="sr-info-box">
+                  <h6>Business</h6>
+                  <h1>{{ result.business }}</h1>
+                </div>
+                <div class="sr-info-box">
+                  <h6>Family</h6>
+                  <h1>{{ result.family }}</h1>
+                </div>
+                <div class="sr-info-box">
+                  <h6>Years in the state</h6>
+                  <h1>{{ result.yearsInState }}</h1>
+                </div>
+                <div class="sr-info-box">
+                  <h6>License list</h6>
+                  <h1>{{ result.licenses }}</h1>
+                </div>
+              </div>
+
+              <div class="sr-tab-page" v-show="activeNav === 1">
+                <div class="sr-table-header sr-grid-transport">
+                  <div>vehicle model</div>
+                  <div>number plate</div>
+                </div>
+
+                <div class="sr-table-body" v-if="result.vehicles.length">
+                  <div
+                    class="sr-table-row sr-grid-transport"
+                    v-for="(vehicle, index) in result.vehicles"
+                    :key="'vehicle-' + index"
+                  >
+                    <div>{{ vehicle.modelName }}</div>
+                    <div class="sr-table-right">{{ vehicle.plate }}</div>
+                  </div>
+                </div>
+
+                <div class="sr-empty-state" v-else>No registered transport found.</div>
+              </div>
+
+              <div class="sr-tab-page" v-show="activeNav === 2">
+                <div class="sr-table-header sr-grid-crimes">
+                  <div>officer</div>
+                  <div>type</div>
+                  <div>reason</div>
+                  <div>date</div>
+                </div>
+
+                <div class="sr-table-body" v-if="result.previousCrimes.length">
+                  <div
+                    class="sr-table-row sr-grid-crimes"
+                    v-for="(record, index) in result.previousCrimes"
+                    :key="'crime-' + index"
+                  >
+                    <div>{{ record.officerName }}</div>
+                    <div>{{ record.type }}</div>
+                    <div>{{ record.reason }}</div>
+                    <div class="sr-table-right">{{ record.date }}</div>
+                  </div>
+                </div>
+
+                <div class="sr-empty-state" v-else>No previous crimes recorded.</div>
+              </div>
+
+              <div class="sr-tab-page" v-show="activeNav === 3">
+                <div class="sr-table-header sr-grid-penalties">
+                  <div>officer</div>
+                  <div>reason</div>
+                  <div>amount</div>
+                  <div>date</div>
+                </div>
+
+                <div class="sr-table-body" v-if="result.penaltiesReceived.length">
+                  <div
+                    class="sr-table-row sr-grid-penalties"
+                    v-for="(record, index) in result.penaltiesReceived"
+                    :key="'penalty-' + index"
+                  >
+                    <div>{{ record.officerName }}</div>
+                    <div>{{ record.reason }}</div>
+                    <div>{{ record.amount }}</div>
+                    <div class="sr-table-right">{{ record.date }}</div>
+                  </div>
+                </div>
+
+                <div class="sr-empty-state" v-else>No penalties recorded.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="wanted-base" v-show="activeTab === 'wantedBase'">
+            <div class="wanted-top">
+              <h1><span>base //</span> wanted players</h1>
+              <div class="sr-btn2" @click="loadWantedList">refresh</div>
+            </div>
+
+            <input
+              class="wanted-search-input"
+              type="text"
+              v-model="wantedQuery"
+              @focus="onInputFocus(true)"
+              @blur="onInputFocus(false)"
+              placeholder="Search by username, phone number or UUID"
+            />
+
+            <div class="wanted-table-header">
+              <div>name</div>
+              <div>stars</div>
+              <div>reason</div>
+              <div class="wanted-action-col">clear</div>
+            </div>
+
+            <div class="wanted-table-body" v-if="filteredWantedList.length">
+              <div
+                class="wanted-table-row"
+                v-for="player in filteredWantedList"
+                :key="'wanted-' + player.uuid"
+              >
+                <div class="wanted-main-cell">
+                  <div class="wanted-player-name">{{ player.name }}</div>
+                  <div class="wanted-player-meta">
+                    UUID {{ player.uuid }}<span v-if="player.phone && player.phone !== 'Not available'"> | {{ player.phone }}</span>
+                  </div>
+                </div>
+                <div>{{ player.stars }}</div>
+                <div class="wanted-reason">{{ player.reason }}</div>
+                <div class="wanted-action-col">
+                  <button
+                    class="wanted-clear-btn"
+                    @click="clearWanted(player)"
+                    :disabled="!canClearWanted || clearingWantedUuid === player.uuid"
+                  >
+                    {{ clearingWantedUuid === player.uuid ? '...' : 'X' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sr-empty-state" v-else-if="wantedLoading">Loading wanted list...</div>
+            <div class="sr-empty-state" v-else-if="wantedQuery.trim().length">
+              No wanted player matched "{{ wantedQuery }}"
+            </div>
+            <div class="sr-empty-state" v-else>No players with wanted level found.</div>
+          </div>
+
+          <div class="wanted-base" v-show="activeTab === 'blacklist'">
+            <div class="wanted-top">
+              <h1><span>base //</span> blacklisted citizens</h1>
+              <div class="sr-btn2" @click="loadBlacklist">refresh</div>
+            </div>
+
+            <input
+              class="wanted-search-input"
+              type="text"
+              v-model="blacklistQuery"
+              @focus="onInputFocus(true)"
+              @blur="onInputFocus(false)"
+              placeholder="Search by username, UUID or reason"
+            />
+
+            <div class="wanted-table-header blacklist-grid">
+              <div>name</div>
+              <div>reason</div>
+              <div>issuer</div>
+              <div>date</div>
+              <div class="wanted-action-col">remove</div>
+            </div>
+
+            <div class="wanted-table-body" v-if="filteredBlacklistList.length">
+              <div
+                class="wanted-table-row blacklist-grid"
+                v-for="entry in filteredBlacklistList"
+                :key="'blacklist-' + entry.uuid"
+              >
+                <div class="wanted-main-cell">
+                  <div class="wanted-player-name">{{ entry.name }}</div>
+                  <div class="wanted-player-meta">UUID {{ entry.uuid }}</div>
+                </div>
+                <div class="wanted-reason">{{ entry.reason }}</div>
+                <div>{{ entry.issuerName }}</div>
+                <div class="sr-table-right">{{ entry.date }}</div>
+                <div class="wanted-action-col">
+                  <button
+                    class="wanted-clear-btn"
+                    @click="removeCitizenBlacklist(entry)"
+                    :disabled="!canManageBlacklist || removingBlacklistUuid === entry.uuid"
+                  >
+                    {{ removingBlacklistUuid === entry.uuid ? '...' : 'X' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="sr-empty-state" v-else-if="blacklistLoading">Loading blacklist...</div>
+            <div class="sr-empty-state" v-else-if="blacklistQuery.trim().length">
+              No blacklisted citizen matched "{{ blacklistQuery }}"
+            </div>
+            <div class="sr-empty-state" v-else>No blacklisted citizens found.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

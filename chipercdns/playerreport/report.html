@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="package://vue.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="left">
+        <div class="backbtn">
+          <img src="./assets/back.svg" alt="" />
+          <h1>
+            Contact <br />
+            <span> Administrator</span>
+          </h1>
+        </div>
+        <div class="paneloptions">
+          <div class="div1" @click="optionselected = 0">
+            <img src="./assets/qm.svg" alt="" />
+            <h1>Send Request</h1>
+          </div>
+          <div class="div2" @click="optionselected = 2">
+            <img src="./assets/q-mark.svg" alt="" />
+            <h1>Frequent Question</h1>
+          </div>
+          <div class="div3" @click="optionselected = 1">
+            <img src="./assets/list.svg" alt="" />
+            <h1>Question History</h1>
+          </div>
+        </div>
+        <div class="calladmin">
+          <div class="callbox">
+            <img src="./assets/phone.svg" alt="" />
+            <h1>
+              call the <br />
+              <span>Administrator</span>
+            </h1>
+          </div>
+        </div>
+      </div>
+      <div class="right" v-if="optionselected == 0">
+        <div class="textarea">
+          <template v-for="(item, index) in reportData" :key="index">
+            <div class="admin" v-if="item.senderType === 1">
+              <div class="admin-left">
+                <h1>
+                  admin
+                  <span>{{(item.senderName || "").replace("_", " ")}}</span>
+                </h1>
+                <p>{{item.message}}</p>
+              </div>
+              <div class="admin-right">
+                <h6>{{item.time}}</h6>
+              </div>
+            </div>
+            <div class="player" v-else>
+              <div class="player-left">
+                <h1>
+                  <span>{{(item.senderName || "").replace("_", " ")}}</span>
+                </h1>
+                <p>{{item.message}}</p>
+              </div>
+              <div class="player-right">
+                <h6>{{item.time}}</h6>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div class="inputarea">
+          <h6>Write <span>your request</span></h6>
+          <div class="inputfield" v-if="!selectedTicketClosed">
+            <img src="./assets/send.svg" alt="" @click="sendReport()" />
+            <input
+              type="text"
+              v-model="reportinput"
+              placeholder="Enter your Request"
+              @keyup.enter="sendReport()"
+            />
+          </div>
+          <div class="inputfield closed-notice" v-else>
+            <h6>
+              This ticket has been <span>closed</span> by the administrator.
+            </h6>
+          </div>
+        </div>
+      </div>
+      <div class="right" v-else-if="optionselected == 1">
+        <div class="textarea">
+          <div
+            class="admin"
+            v-for="(item, index) in historyData"
+            :key="'history-' + index"
+          >
+            <div class="admin-left">
+              <h1>
+                Ticket <span>#{{item.ticketId}} | {{item.statusText}}</span>
+              </h1>
+              <p>{{item.lastMessage}}</p>
+            </div>
+            <div class="admin-right">
+              <h6>{{item.updatedAt}}</h6>
+            </div>
+          </div>
+          <div class="admin" v-if="historyData.length === 0">
+            <div class="admin-left">
+              <h1>History <span>Empty</span></h1>
+              <p>No report history found.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="right" v-else-if="optionselected == 2">
+        <div class="textarea">
+          <div class="admin">
+            <div class="admin-left">
+              <h1>Frequent <span>Questions</span></h1>
+              <p>
+                Use this panel to send report messages and check your report
+                history.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./adminreport.js"></script>
+  </body>
+</html>

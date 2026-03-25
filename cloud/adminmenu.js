@@ -2,7 +2,7 @@ var AdminMenu = new Vue({
   el: "#admin",
   data: {
     enable: true,
-    page: 7,
+    page: 1,
     main: {
       inputGlobal: "",
     },
